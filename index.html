@@ -1,156 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>songs for 2am</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #0a0b16;
-    --bg2: #12132a;
-    --card: #14152c;
-    --lavender: #b9a8ff;
-    --rose: #ff9fc4;
-    --teal: #6fe6dd;
-    --text: #f3eefe;
-    --muted: #8b89ac;
-    --line: rgba(185,168,255,0.14);
-  }
-  *{ box-sizing: border-box; margin:0; padding:0; }
-  html{ scroll-behavior: smooth; }
-  body{ background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>songs for 2am</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0b16;
+      --bg2: #12132a;
+      --card: #14152c;
+      --lavender: #b9a8ff;
+      --rose: #ff9fc4;
+      --teal: #6fe6dd;
+      --text: #f3eefe;
+      --muted: #8b89ac;
+      --line: rgba(185, 168, 255, 0.14);
+    }
 
-  .hero{ position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px; overflow: hidden; }
-  canvas#stars{ position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .avatar-wrap{ position: relative; width: 128px; height: 128px; margin-bottom: 30px; z-index: 1; animation: breathe 6s ease-in-out infinite; }
-  .avatar-wrap::before{ content: ''; position: absolute; inset: -14px; border-radius: 50%; background: radial-gradient(circle, rgba(185,168,255,0.35), transparent 70%); filter: blur(2px); }
-  .avatar-wrap img{ position: relative; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid rgba(243,238,254,0.65); box-shadow: 0 0 40px 6px rgba(185,168,255,0.35), 0 0 90px 20px rgba(185,168,255,0.12); }
-  @keyframes breathe{ 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  .hero h1{ font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.1; letter-spacing: -0.01em; z-index: 1; max-width: 16ch; }
-  .hero h1 span{ color: var(--rose); font-style: normal; font-weight: 600; }
-  .hero p.sub{ z-index: 1; margin-top: 18px; color: var(--muted); font-size: 1.02rem; max-width: 36ch; line-height: 1.6; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
 
-  .scroll-cue{ z-index: 1; margin-top: 56px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 10px; }
-  .scroll-cue .stem{ width: 1px; height: 34px; background: linear-gradient(var(--lavender), transparent); animation: drop 1.8s ease-in-out infinite; }
-  @keyframes drop{ 0% { opacity: 0; transform: translateY(-6px); } 50% { opacity: 1; } 100% { opacity: 0; transform: translateY(6px); } }
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      overflow: hidden;
+    }
 
-  .diary{ position: relative; max-width: 760px; margin: 0 auto; padding: 90px 24px 60px; }
-  .diary-head{ margin-bottom: 44px; }
-  .diary-head .eyebrow{ font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); }
-  .diary-head h2{ font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(1.5rem, 4vw, 2.1rem); margin-top: 10px; }
-  .diary-head p{ margin-top: 10px; color: var(--muted); font-size: 0.9rem; max-width: 50ch; line-height: 1.55; }
+    canvas#stars {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
 
-  .track{ position: relative; display: grid; grid-template-columns: 30px 84px 1fr; align-items: center; gap: 18px; padding: 20px 6px; border-top: 1px solid var(--line); transition: padding-left 0.35s ease; }
-  .track:last-child{ border-bottom: 1px solid var(--line); }
-  .track:hover{ padding-left: 12px; }
-  .track .num{ font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 0.8rem; }
+    .avatar-wrap {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      margin-bottom: 30px;
+      z-index: 1;
+      animation: breathe 6s ease-in-out infinite;
+    }
 
-  .track .clip{ width: 84px; height: 118px; border-radius: 12px; overflow: hidden; background: var(--bg2); box-shadow: 0 0 0 1px var(--line), 0 8px 24px rgba(0,0,0,0.35); }
-  .track .clip video{ width: 100%; height: 100%; object-fit: cover; display: block; }
+    .avatar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(185, 168, 255, 0.35), transparent 70%);
+      filter: blur(2px);
+    }
 
-  .track .info h3{ font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.08rem; margin-bottom: 4px; outline: none; color: var(--text); }
-  .track .info h3:empty::before{ content: attr(data-placeholder); color: var(--muted); opacity: 0.6; }
-  .track .info p{ color: var(--muted); font-size: 0.85rem; line-height: 1.5; outline: none; }
-  .track .info p:empty::before{ content: attr(data-placeholder); opacity: 0.5; }
+    .avatar-wrap img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(243, 238, 254, 0.65);
+      box-shadow: 0 0 40px 6px rgba(185, 168, 255, 0.35), 0 0 90px 20px rgba(185, 168, 255, 0.12);
+    }
 
-  .edit-hint{ text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); margin-top: 30px; opacity: 0.7; }
+    @keyframes breathe {
 
-  footer{ text-align: center; padding: 50px 24px 70px; border-top: 1px solid var(--line); }
-  footer .mini-moon{ width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fdf6ff, var(--lavender) 70%); margin: 0 auto 18px; box-shadow: 0 0 16px 2px rgba(185,168,255,0.4); }
-  footer p{ font-family: 'Fraunces', serif; font-style: italic; color: var(--muted); font-size: 0.95rem; }
+      0%,
+      100% {
+        transform: scale(1);
+      }
 
-  @media (prefers-reduced-motion: reduce){ .avatar-wrap, .scroll-cue .stem{ animation: none !important; } }
-  @media (max-width: 480px){ .track{ grid-template-columns: 22px 64px 1fr; gap: 12px; } .track .clip{ width: 64px; height: 90px; } }
-</style>
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      z-index: 1;
+      max-width: 16ch;
+    }
+
+    .hero h1 span {
+      color: var(--rose);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .hero p.sub {
+      z-index: 1;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 36ch;
+      line-height: 1.6;
+    }
+
+    .scroll-cue {
+      z-index: 1;
+      margin-top: 56px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scroll-cue .stem {
+      width: 1px;
+      height: 34px;
+      background: linear-gradient(var(--lavender), transparent);
+      animation: drop 1.8s ease-in-out infinite;
+    }
+
+    @keyframes drop {
+      0% {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+    }
+
+    .diary {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 90px 24px 60px;
+    }
+
+    .diary-head {
+      margin-bottom: 44px;
+    }
+
+    .diary-head .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .diary-head h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      margin-top: 10px;
+    }
+
+    .diary-head p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 50ch;
+      line-height: 1.55;
+    }
+
+    .track {
+      position: relative;
+      display: grid;
+      grid-template-columns: 30px 84px 1fr;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 6px;
+      border-top: 1px solid var(--line);
+      transition: padding-left 0.35s ease;
+    }
+
+    .track:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .track:hover {
+      padding-left: 12px;
+    }
+
+    .track .num {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .track .clip {
+      width: 84px;
+      height: 118px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg2);
+      box-shadow: 0 0 0 1px var(--line), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .track .clip video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .track .info h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.08rem;
+      margin-bottom: 4px;
+      outline: none;
+      color: var(--text);
+    }
+
+    .track .info h3:empty::before {
+      content: attr(data-placeholder);
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .track .info p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      outline: none;
+    }
+
+    .track .info p:empty::before {
+      content: attr(data-placeholder);
+      opacity: 0.5;
+    }
+
+    .edit-hint {
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: 30px;
+      opacity: 0.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 24px 70px;
+      border-top: 1px solid var(--line);
+    }
+
+    footer .mini-moon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fdf6ff, var(--lavender) 70%);
+      margin: 0 auto 18px;
+      box-shadow: 0 0 16px 2px rgba(185, 168, 255, 0.4);
+    }
+
+    footer p {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .avatar-wrap,
+      .scroll-cue .stem {
+        animation: none !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .track {
+        grid-template-columns: 22px 64px 1fr;
+        gap: 12px;
+      }
+
+      .track .clip {
+        width: 64px;
+        height: 90px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<section class="hero">
-  <canvas id="stars"></canvas>
-  <div class="avatar-wrap">
-    <img src="assets/profile.png" alt="profile photo">
-  </div>
-  <h1>songs that live<br>in my <span>2am</span> thoughts</h1>
-  <p class="sub">a small diary for every song that finds me late at night</p>
-  <div class="scroll-cue">
-    <span>scroll</span>
-    <span class="stem"></span>
-  </div>
-</section>
+  <section class="hero">
+    <canvas id="stars"></canvas>
+    <div class="avatar-wrap">
+      <img src="assets/profile.png" alt="profile photo">
+    </div>
+    <h1>songs that live<br>in my <span>2am</span> thoughts</h1>
+    <p class="sub">a small diary for every song that finds me late at night</p>
+    <div class="scroll-cue">
+      <span>scroll</span>
+      <span class="stem"></span>
+    </div>
+  </section>
 
-<section class="diary">
-  <div class="diary-head">
-    <div class="eyebrow">now spinning</div>
-    <h2>the late-night rotation</h2>
-    <p>15 songs, ready to play. click any title or note to write your own words next to them.</p>
-  </div>
+  <section class="diary">
+    <div class="diary-head">
+      <div class="eyebrow">now spinning</div>
+      <h2>the late-night rotation</h2>
+      <p>15 songs, ready to play. click any title or note to write your own words next to them.</p>
+    </div>
 
-  <!-- 15 tracks -->
-</section>
+    <!-- 15 tracks -->
+  </section>
 
-<div class="edit-hint">click a title or note to edit it directly on the page</div>
+  <div class="edit-hint">click a title or note to edit it directly on the page</div>
 
-<footer>
-  <div class="mini-moon"></div>
-  <p>one song a night, one small story with it.</p>
-</footer>
+  <footer>
+    <div class="mini-moon"></div>
+    <p>one song a night, one small story with it.</p>
+  </footer>
 
-<script>
-  const canvas = document.getElementById('stars');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
+  <script>
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
 
-  function resize(){
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    stars = Array.from({ length: 120 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.4 + 0.2,
-      speed: Math.random() * 0.015 + 0.004,
-      phase: Math.random() * Math.PI * 2
-    }));
-  }
-
-  function draw(t){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for(const s of stars){
-      const twinkle = 0.5 + 0.5 * Math.sin(t * s.speed + s.phase);
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(243,238,254,${0.15 + twinkle * 0.6})`;
-      ctx.fill();
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      stars = Array.from({ length: 120 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.4 + 0.2,
+        speed: Math.random() * 0.015 + 0.004,
+        phase: Math.random() * Math.PI * 2
+      }));
     }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of stars) {
+        const twinkle = 0.5 + 0.5 * Math.sin(t * s.speed + s.phase);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(243,238,254,${0.15 + twinkle * 0.6})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
     requestAnimationFrame(draw);
-  }
 
-  window.addEventListener('resize', resize);
-  resize();
-  requestAnimationFrame(draw);
+    const songs = [
+      { title: "Slow Static", note: "the one that plays when the room goes quiet.<br>every line feels like it was written for tonight." },
+      { title: "Faded Light", note: "for the moments that blur before sleep takes over.<br>soft, a little sad, exactly right." },
+      { title: "Quiet Hours", note: "this is the sound of not wanting to talk to anyone.<br>just sit, just breathe, just listen." },
+      { title: "Halfway Awake", note: "stuck between a dream and the ceiling above me.<br>this song fits that in-between perfectly." },
+      { title: "Runs in Circles", note: "the thoughts that repeat at 2am need a soundtrack.<br>this one keeps up with them." },
+      { title: "Losing the Signal", note: "for when everything feels far away and fuzzy.<br>a little static, a little comfort." },
+      { title: "Almost Gone", note: "the last song before my eyes finally give in.<br>it always feels like the right goodbye." },
+      { title: "Paper Thin Walls", note: "quiet enough to not wake anyone up.<br>loud enough to fill my whole head." },
+      { title: "Still Here", note: "for the nights that stretch longer than they should.<br>this one keeps me company." },
+      { title: "Neon Blur", note: "reminds me of streetlights through a half-closed window.<br>soft chaos, in the best way." },
+      { title: "Empty Room, Full Head", note: "when the silence gets too loud, this fills the gap.<br>not sad, just honest." },
+      { title: "Drift", note: "the song that lets my mind wander without asking questions.<br>no destination, just movement." },
+      { title: "Undone", note: "for the thoughts I never say out loud.<br>this one says them for me." },
+      { title: "Low Battery", note: "running on nothing but still awake somehow.<br>this is the sound of that exact feeling." },
+      { title: "Last Light Out", note: "the final song of the night, every single time.<br>a small, quiet ending." }
+    ];
 
-  const diary = document.querySelector('.diary');
-  for(let i = 1; i <= 15; i++){
-    const num = String(i).padStart(2, '0');
-    const track = document.createElement('div');
-    track.className = 'track';
-    track.innerHTML = `
+    const diary = document.querySelector('.diary');
+    songs.forEach((song, idx) => {
+      const num = String(idx + 1).padStart(2, '0');
+      const track = document.createElement('div');
+      track.className = 'track';
+      track.innerHTML = `
       <span class="num">${num}</span>
       <div class="clip">
         <video src="assets/track${num}.mp4" controls preload="metadata" playsinline></video>
       </div>
       <div class="info">
-        <h3 contenteditable="true" data-placeholder="Song title"></h3>
-        <p contenteditable="true" data-placeholder="A short 2-line note about this song, and what it means to you."></p>
+        <h3 contenteditable="true">${song.title}</h3>
+        <p contenteditable="true">${song.note}</p>
       </div>
     `;
-    diary.appendChild(track);
-  }
-</script>
+      diary.appendChild(track);
+    });
+  </script>
 
 </body>
+
 </html>
